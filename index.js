@@ -31,9 +31,6 @@ function showObjectsTable(id) {
   fetch(ids)
   .then(response => response.json())
   .then(data => {
-    document.querySelector('#suh').innerHTML += `
-    <a href="#suh" onclick="showGalleries(url)"></a>
-    `
     data.records.forEach(object => {
       console.log(object);
       var names = "";
@@ -44,9 +41,9 @@ function showObjectsTable(id) {
           console.log(names);
         })
       }
-      document.querySelector("#objects").innerHTML += `
+       document.querySelector("#objects").innerHTML += `
         <li>
-          <a href="#${object.exact_title}" onclick="showObjectDescription(${object.objectid})">
+          <a href="#${object.exact_title}" onclick="showObjectDescription(${object.id})">
             Work Title: ${object.title}
           </li>
           <li> Author(s): ${names}
@@ -67,16 +64,20 @@ function showObjectsTable(id) {
   document.querySelector("#all-galleries").style.display = "none";
 }
 
+
 function showObjectDescription(idg) {
-  const objurl = `https://api.harvardartmuseums.org/object/${idg}&apikey=${API_KEY}`;
+  console.log(idg);
+  const objurl = `https://api.harvardartmuseums.org/object/${idg}?apikey=${API_KEY}`;
   console.log(objurl);
   fetch(objurl)
   .then(response => response.json())
   .then(data => {
-      document.querySelector("#singleobject").innerHTML += `
-        Work Title: ${object.title}`
-      console.log("#singleobject");
-  });
-  document.querySelector("#all-objects").style.display = "block";
+    document.querySelector("#singleobject").innerHTML += `
+      <li> Work Title: ${data.title} </li>
+      <li> Description: ${data.description} </li>
+      <li>Provenance: ${data.provenance}</li>
+      <li> Accession Year: ${data.accessionyear}</li>`
+  document.querySelector("#all-objects").style.display = "none";
   document.querySelector("#all-galleries").style.display = "none";
+})
 }
