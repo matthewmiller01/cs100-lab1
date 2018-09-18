@@ -13,8 +13,8 @@
 }
 
 a {
-    text-decoration: underline;
-    color: blue;
+    text-decoration: none;
+    color: darkgreen;
     cursor: pointer;
 }
 
@@ -23,7 +23,7 @@ body {
 }
 
 table {
-    border-collapse: collapse;
+    border: 1px solid black;
 }
 
 table, th, td {
@@ -41,4 +41,8 @@ th, td {
 #all-galleries {
   font-family: "Courier", monospace;
   text-align: center;
+}
+
+#all-objects {
+
 }
