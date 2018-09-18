@@ -16,7 +16,7 @@ function showGalleries(url) {
       if (gallery.objectcount == 0)
       {
         document.querySelector("#galleries").innerHTML += `
-          <li></li>Objectless
+          <p></p>Objectless
         `
       }
       //adds information on each gallery, including an object count
@@ -26,7 +26,7 @@ function showGalleries(url) {
             Gallery #${gallery.id}: ${gallery.name} (Floor ${gallery.floor}) Object Count: ${gallery.objectcount}
           <p></p>
           </a>
-        </li><li></li>
+        </li><p></p>
       `;
     });
     if (data.info.next) {
@@ -34,6 +34,7 @@ function showGalleries(url) {
     }
   })
   //doesn't display other HTML elements on this page
+  document.querySelector("#all-galleries").style.display = "block"; //new
   document.querySelector("#all-objects").style.display = "none";
   document.querySelector("#boton").style.display = "none";
   document.querySelector("#single-object").style.display = "none";
@@ -88,7 +89,7 @@ function showObjectsTable(id) {
       else {
         {
           document.querySelector("#objects").innerHTML+= `
-            No image available. <li></li>
+            No image available. <p></p>
           `;
         }
       }
@@ -97,6 +98,8 @@ function showObjectsTable(id) {
 })
   document.querySelector("#all-objects").style.display = "block";
   document.querySelector("#all-galleries").style.display = "none";
+  document.querySelector("#single-object").style.display = "none";
+  document.querySelector("#boton").style.display = "none";
 }
 
 //shows description of a single object
@@ -109,7 +112,7 @@ function showObjectDescription(idg) {
   .then(data => {
     console.log(data);
     //many conditions so that if object missing an attribute, it displays none instead
-    document.querySelector("#singleobject").innerHTML += `
+    document.querySelector("#singleobject").innerHTML = `
       <li> Work Title: ${data.title} </li>`
     var description = "None";
     if(data.description)
@@ -141,6 +144,7 @@ function showObjectDescription(idg) {
     //does not display other HTML elements here
   document.querySelector("#single-object").style.display = "block";
   document.querySelector("#all-objects").style.display = "none";
+  document.querySelector("#boton").style.display = "block";
   document.querySelector("#all-galleries").style.display = "none";
 })
 }
