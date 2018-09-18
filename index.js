@@ -107,6 +107,7 @@ function showObjectDescription(idg) {
   fetch(objurl)
   .then(response => response.json())
   .then(data => {
+    console.log(data);
     //many conditions so that if object missing an attribute, it displays none instead
     document.querySelector("#singleobject").innerHTML += `
       <li> Work Title: ${data.title} </li>`
@@ -138,6 +139,7 @@ function showObjectDescription(idg) {
       `;
     }
     //does not display other HTML elements here
+  document.querySelector("#single-object").style.display = "block";
   document.querySelector("#all-objects").style.display = "none";
   document.querySelector("#all-galleries").style.display = "none";
 })
