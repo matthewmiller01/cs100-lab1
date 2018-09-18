@@ -1,5 +1,7 @@
 .title {
     text-align: center;
+    font-style: italic;
+    color: crimson;
 }
 
 .link {
@@ -43,6 +45,9 @@ th, td {
   text-align: center;
 }
 
-#all-objects {
-
+#logo {
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

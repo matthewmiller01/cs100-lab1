@@ -16,7 +16,7 @@ function showGalleries(url) {
       if (gallery.objectcount == 0)
       {
         document.querySelector("#galleries").innerHTML += `
-          Objectless
+          <li></li>Objectless
         `
       }
       //adds information on each gallery, including an object count
@@ -57,19 +57,9 @@ window.addEventListener("hashchange", () => {
 //shows table of objects in a specific gallery
 function showObjectsTable(id) {
   const ids = `https://api.harvardartmuseums.org/object?gallery=${id}&apikey=${API_KEY}`;
-  console.log(ids);
   fetch(ids)
   .then(response => response.json())
   .then(data => {
-    // this is an added feature of pointing out when there are no items in the collection for user
-    if (data.records.objectcount == null)
-    {
-      console.log(data);
-      document.querySelector("#objects").innerHTML = `
-        Lamentably, there are no objects in this collection.
-        <li> Reload the page to return to the gallery list</li>
-      `
-    }
     //creates a list of people who contributed to the object to list as contributors
     data.records.forEach(object => {
       var names = "";
@@ -92,13 +82,13 @@ function showObjectsTable(id) {
         if(object.primaryimageurl)
         {
             document.querySelector("#objects").innerHTML += `
-            <img id = "newImage" src = "${object.primaryimageurl}"></img>)
+            <img id = "newImage" src = "${object.primaryimageurl}" height = 200 width = 200></img><p></p>
         `;
       }
       else {
         {
           document.querySelector("#objects").innerHTML+= `
-            No image available.
+            No image available. <li></li>
           `;
         }
       }
