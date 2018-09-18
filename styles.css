@@ -2,10 +2,24 @@
     text-align: center;
 }
 
+.link {
+  font-family: "Times New Roman", times, serif;
+}
+
+.btn {
+  border: none;
+  background-color: blue;
+  font-family: "Times New Roman", times, serif;
+}
+
 a {
     text-decoration: underline;
     color: blue;
     cursor: pointer;
+}
+
+body {
+  background-color: lightgrey;
 }
 
 table {
@@ -22,4 +36,9 @@ th, td {
 
 .gallery-image {
     width: 80px;
+}
+
+#all-galleries {
+  font-family: "Courier", monospace;
+  text-align: center;
 }
