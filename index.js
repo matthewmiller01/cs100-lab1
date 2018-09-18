@@ -1,5 +1,5 @@
 const API_KEY = "6a6275c0-b77e-11e8-a4d1-69890776a30b";
-
+var currPage = 0;
 //shows all the galleries if the page is loaded
 document.addEventListener("DOMContentLoaded", () => {
   const url = `https://api.harvardartmuseums.org/gallery?apikey=${API_KEY}`;
@@ -7,27 +7,40 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function showGalleries(url) {
+  currPage = 1;
   fetch(url)
   .then(response => response.json())
   //callbacks so that once it has the data it can display each gallery
   .then(data => {
     data.records.forEach(gallery => {
       //first sets a warning that a gallery has no objects so person doesn't click there (extra feature)
+      var objectless = false;
+      //way to warn user that a gallery empty to avoid waste of clicking
       if (gallery.objectcount == 0)
       {
-        document.querySelector("#galleries").innerHTML += `
-          <p></p>Objectless
-        `
+        objectless = true;
       }
       //adds information on each gallery, including an object count
       document.querySelector("#galleries").innerHTML += `
         <li>
           <a href="#${gallery.id}" onclick="showObjectsTable(${gallery.id})">
-            Gallery #${gallery.id}: ${gallery.name} (Floor ${gallery.floor}) Object Count: ${gallery.objectcount}
-          <p></p>
-          </a>
-        </li><p></p>
-      `;
+            Gallery #${gallery.id}: ${gallery.name} (Floor ${gallery.floor})`
+        if (objectless)
+        {
+          document.querySelector("#galleries").innerHTML += `
+          <i>No objects in this space :(</i>
+            <p></p>
+            </a>
+          </li><p></p>`
+        }
+        else {
+          document.querySelector("#galleries").innerHTML += `
+              Object Count: ${gallery.objectcount}
+            <p></p>
+            </a>
+          </li><p></p>
+        `;
+        }
     });
     if (data.info.next) {
       showGalleries(data.info.next);
@@ -46,17 +59,23 @@ window.addEventListener("hashchange", () => {
   //so checking the length of the previous page's hash can tell you if you have to go back to that gallery
   //this was a trick that Mohamed Ally helped me think through earlier today
   var hash = window.location.hash.slice(1);
-  if(hash.length == 4)
+  //going from an individual object to the gallery to which it belongs since previous page had hash length 4
+  if(hash.length == 4 && currPage == 3)
   {
     showObjectsTable(hash);
   }
-//  else {
-//      window.location.reload();
-//  }
+  //going back to the start page
+  else if(hash.length== 0 && currPage!=3)
+  {
+    window.location.reload();
+  }
 });
 
 //shows table of objects in a specific gallery
 function showObjectsTable(id) {
+  currPage = 2;
+  //resets the HTML so that going back won't duplicate the page
+  document.querySelector("#objects").innerHTML = ``;
   const ids = `https://api.harvardartmuseums.org/object?gallery=${id}&apikey=${API_KEY}`;
   fetch(ids)
   .then(response => response.json())
@@ -72,7 +91,7 @@ function showObjectsTable(id) {
       }
        document.querySelector("#objects").innerHTML += `
         <li>
-          <a href="#${object.exact_title}" onclick="showObjectDescription(${object.id})">
+          <a href="#${object.id}" onclick="showObjectDescription(${object.id})">
             Work Title: ${object.title}
           </li>
           <li> Author(s): ${names}
@@ -99,11 +118,12 @@ function showObjectsTable(id) {
   document.querySelector("#all-objects").style.display = "block";
   document.querySelector("#all-galleries").style.display = "none";
   document.querySelector("#single-object").style.display = "none";
-  document.querySelector("#boton").style.display = "none";
+  document.querySelector("#boton").style.display = "block";
 }
 
 //shows description of a single object
 function showObjectDescription(idg) {
+  currPage = 3;
   console.log(idg);
   const objurl = `https://api.harvardartmuseums.org/object/${idg}?apikey=${API_KEY}`;
   console.log(objurl);
@@ -138,7 +158,7 @@ function showObjectDescription(idg) {
     if(data.primaryimageurl)
       {
           document.querySelector("#singleobject").innerHTML += `
-          <img id = "newImage" src = "${data.primaryimageurl}"></img>)
+          <img id = "newImage" src = "${data.primaryimageurl}" height = 400 width = 400></img>
       `;
     }
     //does not display other HTML elements here
